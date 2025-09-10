@@ -23,8 +23,8 @@ const TableData = ({ searchData, loggedUser, debouncedValue }) => {
         setInputVals({})
     }
 
-    const updateTaskFunction = () => {
-        registerUser(inputVals)
+    const updateTaskFunction = async () => {
+       await registerUser(inputVals)
         setTaskAndBtnStatusFlag({ addTaskFlag: true, btnStatus: true })
     }
 
@@ -65,4 +65,4 @@ const TableData = ({ searchData, loggedUser, debouncedValue }) => {
     )
 }
 
-export default React.memo(TableData);
+export default TableData;

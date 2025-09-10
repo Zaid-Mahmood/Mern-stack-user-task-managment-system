@@ -77,4 +77,4 @@ const TableData2 = ({ setTaskAndBtnStatusFlag, setInputVals, searchData, addAndU
     )
 }
 
-export default React.memo(TableData2);
+export default TableData2;

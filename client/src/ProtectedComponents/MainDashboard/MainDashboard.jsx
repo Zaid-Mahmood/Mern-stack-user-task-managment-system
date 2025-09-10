@@ -25,9 +25,9 @@ const MainDashboard = () => {
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
   useEffect(() => {
-    const handler = setTimeout(() => {
+    const handler = setTimeout(async () => {
       if(debouncedValue.value){
-      registerUser({...debouncedValue});
+     await registerUser({...debouncedValue});
       }
     }, debouncedValue.delay)
     return () => {

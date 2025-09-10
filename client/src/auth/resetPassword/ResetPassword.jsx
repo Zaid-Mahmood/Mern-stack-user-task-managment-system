@@ -1,31 +1,30 @@
 import { useState } from 'react'
-import { usePostApi } from '../../customHooks/usePostApi';
+import { usePatchApi } from '../../customHooks/usePatchApi';
 import { useParams } from 'react-router-dom';
 import { ResetPasswordUtils } from './ResetPasswordUtils';
 import Login from '../login/Login';
 const ResetPassword = () => {
   const { token } = useParams();
-  const postUrl = `${import.meta.env.VITE_API_URL}reset-password/${token}`;
-
-  const { registerUser, loading, data, error } = usePostApi(postUrl)
+  const updatePswdUrl = `${import.meta.env.VITE_API_URL}reset-password/${token}`;
+  const { patchData, updateData, updateError, updateLoading } = usePatchApi(updatePswdUrl);
   const [passwords, setPasswords] = useState({ newPassword: null, confirmPassword: null })
   const changeVal = (event) => {
     const { name, value } = event.target;
     setPasswords((prev) => ({ ...prev, [name]: value }))
   }
   const submitValues = async () => {
-    await registerUser(passwords);
+    await patchData(passwords);
   }
   return (
     <>
-      {error
+      {updateError
         ?
-        <p>{error}</p>
+        <p>{updateError}</p>
         :
-        loading ?
+        updateLoading ?
           <p>Loading ...</p>
           :
-          data
+          updateData
             ?
             <Login />
             :

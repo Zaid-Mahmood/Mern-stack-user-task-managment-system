@@ -44,7 +44,7 @@ const ForgotPassword = () => {
                     <div className="text-center content-center h-svh">
                         <h2 className="text-black font-medium text-xl">Enter your registered email address</h2>
                         <br />
-                        <input className={`border-2 rounded-md px-4 py-2 w-1/4 ${emailValueAndValid.isEmailValid === false || (emailValueAndValid.emailRequiredStatus && !emailValueAndValid.emailValue) ? 'border-red-500' : 'border-black'}`} type="email" onChange={changeVal} />
+                        <input className={`border-2 rounded-md px-4 py-2 w-1/4 text-center ${emailValueAndValid.isEmailValid === false || (emailValueAndValid.emailRequiredStatus && !emailValueAndValid.emailValue) ? 'border-red-500' : 'border-black'}`} type="email" onChange={changeVal} />
                         <br /><br />
                         {emailValueAndValid.emailRequiredStatus && !emailValueAndValid.emailValue ? <p className="text-red-500">Email is required</p> : emailValueAndValid.isEmailValid === false ? <p className="text-red-500">Email format is not correct</p> : null}
                         <button type="submit" className="cursor-pointer text-white bg-blue-500 border-2 rounded-full px-4 py-2" onClick={generateLink}>Generate Link</button>

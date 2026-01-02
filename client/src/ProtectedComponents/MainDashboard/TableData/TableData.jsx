@@ -2,8 +2,7 @@ import { useCallback, useState } from 'react';
 import { tableData } from './TableData.utils';
 import { usePostApi } from '../../../customHooks/usePostApi';
 import TableData2 from './TableData2';
-import React from 'react';
-const TableData = ({ searchData, loggedUser, debouncedValue }) => {
+const TableData = ({  debouncedValue , searchData, loggedUser ,  searchError , searchLoading  }) => {
     const postUrl = `${import.meta.env.VITE_API_URL}add-user`;
     const updateUrl = `${import.meta.env.VITE_API_URL}update-task`;
     const [inputVals, setInputVals] = useState("");
@@ -60,6 +59,8 @@ const TableData = ({ searchData, loggedUser, debouncedValue }) => {
                 searchData={searchData}
                 addAndUpdateData={data}
                 debouncedValue={debouncedValue}
+                     searchError={searchError}
+              searchLoading={searchLoading}
             />
         </div>
     )

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useGetApi } from "../../../customHooks/useGetApi";
 import { useDeleteApi } from "../../../customHooks/useDeleteApi";
-const TableData2 = ({ setTaskAndBtnStatusFlag, setInputVals, searchData, addAndUpdateData, debouncedValue }) => {
+const TableData2 = ({ setTaskAndBtnStatusFlag, setInputVals, searchData, addAndUpdateData, debouncedValue, searchError, searchLoading }) => {
     const getUrl = `${import.meta.env.VITE_API_URL}get-all-tasks`;
     const deleteUrl = `${import.meta.env.VITE_API_URL}delete-task`;
     const [userData, setUserData] = useState([]);
@@ -28,7 +28,6 @@ const TableData2 = ({ setTaskAndBtnStatusFlag, setInputVals, searchData, addAndU
         const data = await deleteRow({ id })
         setUserData(data.data?.tasks)
     }
-    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,43 +37,60 @@ const TableData2 = ({ setTaskAndBtnStatusFlag, setInputVals, searchData, addAndU
                 return;
             }
             if (searchData || debouncedValue) {
-                setUserData(searchData?.data  || [])
+                setUserData(searchData?.data || [])
                 return;
             }
         }
         fetchData()
-    }, [addAndUpdateData, debouncedValue])
+    }, [addAndUpdateData, debouncedValue , searchData])
+
 
     return (
-        <div>
-            <table className='mx-auto my-4 table-auto md:table-fixed'>
-                <thead>
-                    <tr>
-                        <th>Sr No.</th>
-                        <th>Task Title</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Task Status</th>
-                        <th>Edit Task</th>
-                        <th>Delete Task</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {userData?.map((item, id) => (
-                        <tr key={id}>
-                            <td>{id + 1}</td>
-                            <td>{item.userTasks}</td>
-                            <td>{setTimeFormat(item.startDate)}</td>
-                            <td>{setTimeFormat(item.endDate)}</td>
-                            <td>{item.taskStatus}</td>
-                            <td><button className='cursor-pointer border-2 bg-green-500 border-green-500 rounded-full px-4 py-2' onClick={() => editFunction(item._id)}>Edit</button></td>
-                            <td><button onClick={() => delTaskFunction(item._id)} className='cursor-pointer border-2 bg-red-500 border-red-500 rounded-full px-4 py-2'>Delete</button></td>
+        <>
+         {searchError ?
+             <p className="text-red-500">Error: {searchError}</p>
+             :
+            searchLoading ?
+             <p>Searching...</p>
+           :
+            <div>
+                <table className='mx-auto my-4 table-auto md:table-fixed'>
+                    <thead>
+                        <tr>
+                            <th>Sr No.</th>
+                            <th>Task Title</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Task Status</th>
+                            <th>Edit Task</th>
+                            <th>Delete Task</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {
+                        userData?.length === 0 ?
+                        <tr>
+                            <td colSpan="7" className="text-center">No Tasks Found</td>
+                        </tr>
+                        :
+                        userData?.map((item, id) => (
+                            <tr key={id}>
+                                <td>{id + 1}</td>
+                                <td>{item.userTasks}</td>
+                                <td>{setTimeFormat(item.startDate)}</td>
+                                <td>{setTimeFormat(item.endDate)}</td>
+                                <td>{item.taskStatus}</td>
+                                <td><button className='cursor-pointer border-2 bg-green-500 border-green-500 rounded-full px-4 py-2' onClick={() => editFunction(item._id)}>Edit</button></td>
+                                <td><button onClick={() => delTaskFunction(item._id)} className='cursor-pointer border-2 bg-red-500 border-red-500 rounded-full px-4 py-2'>Delete</button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div> 
+}
+        </>
     )
 }
+
 
 export default TableData2;
